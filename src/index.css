@@ -1,0 +1,65 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --radius: 0.5rem;
+  }
+
+  h1 {
+    @apply font-aleo text-h1 tracking-[0.0175rem] font-bold;
+  }
+  h2 {
+    @apply font-aleo text-h2 tracking-[0.0125rem] font-bold;
+  }
+  h3 {
+    @apply font-aleo text-h3 tracking-[0.00625rem] font-semibold;
+  }
+  h4 {
+    @apply font-aleo text-h4 tracking-[0.0125rem] font-semibold;
+  }
+  h5 {
+    @apply font-aleo text-h5 tracking-[0.00625rem] font-medium;
+  }
+  h6 {
+    @apply font-aleo text-h6 tracking-[0.0125rem] font-medium;
+  }
+  p {
+    @apply font-aleo text-base tracking-[0.0125rem];
+  }
+
+  li {
+    @apply font-aleo text-base tracking-[0.0125rem];
+  }
+  .btn-text {
+    @apply font-aleo text-h6 tracking-[0.0125rem] font-semibold;
+  }
+  a {
+    @apply font-aleo text-base tracking-[0.0125rem] font-medium;
+  }
+  .mobile-menu {
+    @apply font-aleo text-xl tracking-[0.0125rem] font-medium;
+  }
+  .hero-link {
+    @apply font-aleo text-lg tracking-[0.0125rem] font-medium  rounded-xl hover:underline;
+  }
+}
+
+@layer components {
+  .navigation-menu [data-trigger] {
+    @apply text-h6 font-aleo;
+  }
+
+  .navigation-menu [data-content] {
+    @apply text-h6 font-aleo;
+  }
+
+  .navigation-menu h3 {
+    @apply text-h5 font-aleo font-bold;
+  }
+
+  .navigation-menu li a {
+    @apply text-h6 font-aleo;
+  }
+}
