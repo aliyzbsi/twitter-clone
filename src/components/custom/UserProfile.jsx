@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
@@ -10,6 +10,9 @@ import TweetComposer from "./TweetComposer";
 import TweetItem from "./TweetItem";
 import { fetchUserTweets } from "@/redux/Slices/tweetSlice";
 import { clearProfileUser, getUserById } from "@/redux/Slices/authSlice";
+import { checkFollowStatus } from "@/redux/Slices/followSlice";
+import FollowButton from "./FollowButton";
+import FollowersModal from "./FollowersModal";
 
 function UserProfile() {
   const dispatch = useDispatch();
@@ -25,15 +28,17 @@ function UserProfile() {
   const { userTweet, loading: tweetLoading } = useSelector(
     (state) => state.tweet
   );
+  const [showFollowersModal, setShowFollowersModal] = useState(false);
+  const [showFollowingModal, setShowFollowingModal] = useState(false);
+  const { isFollowing } = useSelector((state) => state.follow);
 
   useEffect(() => {
-    console.log("kullanıcı adı:", userName);
-    console.log("kullanıcı id si:", id);
     if (id) {
       // Redux state'inde userId varsa direkt kullan
       dispatch(getUserById(id)).then((action) => {
         if (action.payload?.id) {
           dispatch(fetchUserTweets(id));
+          dispatch(checkFollowStatus(id));
         }
       });
     }
@@ -97,9 +102,7 @@ function UserProfile() {
               Profili Düzenle
             </button>
           ) : (
-            <button className="bg-white text-black px-4 py-1.5 rounded-full hover:bg-gray-200 transition-colors">
-              Takip Et
-            </button>
+            <FollowButton userId={profileUser.id} />
           )}
         </div>
       </div>
@@ -114,11 +117,17 @@ function UserProfile() {
         )}
 
         <div className="flex gap-4 mt-3">
-          <button className="hover:underline">
+          <button
+            onClick={() => setShowFollowingModal(true)}
+            className="hover:underline"
+          >
             <span className="font-bold">{profileUser.followingCount || 0}</span>{" "}
             <span className="text-gray-500">Takip edilen</span>
           </button>
-          <button className="hover:underline">
+          <button
+            onClick={() => setShowFollowersModal(true)}
+            className="hover:underline"
+          >
             <span className="font-bold">{profileUser.followersCount || 0}</span>{" "}
             <span className="text-gray-500">Takipçi</span>
           </button>
@@ -172,6 +181,18 @@ function UserProfile() {
           <div className="p-8 text-center text-gray-500">Henüz gönderi yok</div>
         )}
       </div>
+      <FollowersModal
+        isOpen={showFollowersModal}
+        onClose={() => setShowFollowersModal(false)}
+        userId={profileUser.id}
+        type="followers"
+      />
+      <FollowersModal
+        isOpen={showFollowingModal}
+        onClose={() => setShowFollowingModal(false)}
+        userId={profileUser.id}
+        type="following"
+      />
     </div>
   );
 }

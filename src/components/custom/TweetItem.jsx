@@ -1,5 +1,3 @@
-"use client";
-
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
@@ -73,11 +71,12 @@ function TweetItem({ tweet }) {
   return (
     <div
       className="p-4 hover:bg-gray-900/50 transition-colors cursor-pointer border-b"
-      onClick={() =>
+      onClick={() => {
+        console.log("gelen tweet", tweet.userFullName);
         history.push(`/tweets/${createSlug(tweet.userFullName)}/${tweet.id}`, {
           tweet,
-        })
-      }
+        });
+      }}
     >
       {tweet.tweetType === "RETWEET" && (
         <p className="text-sm text-gray-500 mb-2">
